@@ -12,7 +12,7 @@ HEADERS = params.h kex.h kem.h indcpa.h polyvec.h poly.h ntt.h cbd.h reduce.c ve
 HEADERSKECCAK = $(HEADERS) fips202.h
 HEADERSNINETIES = $(HEADERS) aes256ctr.h sha2.h
 
-
+HEXL_INC=-I/home/joserochh/mylibs/include
 
 .PHONY: all speed shared clean
 
@@ -78,7 +78,7 @@ test.o:
 	$(CC) $(CFLAGS) test.c -o test.o -c
 
 test : 
-	$(CXX) -I/home/joserochh/mylibs/include ntt-wrapper.o reduce.o ntt-test.o test.o -o test -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(HEXL_INC) ntt-wrapper.o reduce.o ntt-test.o test.o -o test -L/home/joserochh/mylibs/lib -lhexl -static
 
 
 
@@ -102,40 +102,40 @@ libpqcrystals_kyber1024_ref.so: $(SOURCES) $(HEADERS) symmetric-shake.c
 	$(CC) -shared -fPIC $(CFLAGS) -DKYBER_K=4 $(SOURCES) symmetric-shake.c -o libpqcrystals_kyber1024_ref.so
 
 test_kyber512: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h test_kyber.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=2 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber512 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=2 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber512 -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_kyber768: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h test_kyber.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=3 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber768 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=3 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber768 -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_kyber1024: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h test_kyber.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=4 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber1024 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=4 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber1024 -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_kex512: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h test_kex.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=2 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex512 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=2 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex512 -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_kex768: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h test_kex.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=3 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex768 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=3 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex768 -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_kex1024: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h test_kex.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=4 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex1024 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=4 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex1024 -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_vectors512: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h test_vectors.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=2 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors512 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=2 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors512 -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_vectors768: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h test_vectors.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=3 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors768 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=3 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors768 -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_vectors1024: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h test_vectors.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=4 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors1024 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=4 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors1024 -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_speed512: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h cpucycles.h cpucycles.c speed_print.h speed_print.c test_speed.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=2 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed512 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=2 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed512 -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_speed768: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h cpucycles.h cpucycles.c speed_print.h speed_print.c test_speed.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=3 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed768 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=3 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed768 -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_speed1024: $(SOURCESKECCAK) $(HEADERSKECCAK) IntelHEXL/ntt/include/ntt-wrapper.h cpucycles.h cpucycles.c speed_print.h speed_print.c test_speed.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -DKYBER_K=4 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed1024 -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -DKYBER_K=4 $(SOURCESKECCAK) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed1024 -L/home/joserochh/mylibs/lib -lhexl -static
 
 libpqcrystals_kyber512-90s_ref.so: $(SOURCES) $(HEADERS) symmetric-aes.c
 	$(CC) -shared -fPIC $(CFLAGS) -DKYBER_K=2 -DKYBER_90S $(SOURCES) symmetric-aes.c -o libpqcrystals_kyber512-90s_ref.so
@@ -147,40 +147,40 @@ libpqcrystals_kyber1024-90s_ref.so: $(SOURCES) $(HEADERS) symmetric-aes.c
 	$(CC) -shared -fPIC $(CFLAGS) -DKYBER_K=4 -DKYBER_90S $(SOURCES) symmetric-aes.c -o libpqcrystals_kyber1024-90s_ref.so
 
 test_kyber512-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h test_kyber.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=2 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber512-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=2 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber512-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_kyber768-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h test_kyber.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=3 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber768-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=3 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber768-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_kyber1024-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h test_kyber.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=4 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber1024-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=4 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kyber.c -o test_kyber1024-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_kex512-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h test_kex.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=2 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex512-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=2 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex512-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_kex768-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h test_kex.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=3 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex768-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=3 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex768-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_kex1024-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h test_kex.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=4 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex1024-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=4 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c test_kex.c -o test_kex1024-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_vectors512-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h test_vectors.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=2 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors512-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=2 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors512-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_vectors768-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h test_vectors.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=3 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors768-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=3 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors768-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_vectors1024-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h test_vectors.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=4 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors1024-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=4 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc test_vectors.c -o test_vectors1024-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_speed512-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h cpucycles.h cpucycles.c speed_print.h speed_print.c test_speed.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=2 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed512-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=2 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed512-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_speed768-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h cpucycles.h cpucycles.c speed_print.h speed_print.c test_speed.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=3 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed768-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=3 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed768-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 test_speed1024-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) IntelHEXL/ntt/include/ntt-wrapper.h cpucycles.h cpucycles.c speed_print.h speed_print.c test_speed.c randombytes.c
-	$(CXX) $(CFLAGS) -I/home/joserochh/mylibs/include -D KYBER_90S -DKYBER_K=4 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed1024-90s -L/home/joserochh/mylibs/lib -lhexl -static
+	$(CXX) $(CFLAGS) $(HEXL_INC) -D KYBER_90S -DKYBER_K=4 $(SOURCESNINETIES) IntelHEXL/ntt/ntt-wrapper.cc randombytes.c cpucycles.c speed_print.c test_speed.c -o test_speed1024-90s -L/home/joserochh/mylibs/lib -lhexl -static
 
 PQCgenKAT_kem512: $(SOURCESKECCAK) $(HEADERSKECCAK) PQCgenKAT_kem.c rng.c rng.h
 	$(CC) $(NISTFLAGS) -DKYBER_K=2 -o $@ $(SOURCESKECCAK) rng.c PQCgenKAT_kem.c $(LDFLAGS) -lcrypto
