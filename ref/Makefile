@@ -11,6 +11,8 @@ HEADERS = params.h kex.h kem.h indcpa.h polyvec.h poly.h ntt.h cbd.h reduce.c ve
 HEADERSKECCAK = $(HEADERS) fips202.h
 HEADERSNINETIES = $(HEADERS) aes256ctr.h sha2.h
 
+
+
 .PHONY: all speed shared clean
 
 all: \
@@ -33,8 +35,12 @@ all: \
   test_vectors768-90s \
   test_vectors1024-90s
 
+
+
 speed: \
-  test_speed512 \
+	hexl-wrapper.o \
+	test_speed512.o \
+  test_speed5123 \
   test_speed768 \
   test_speed1024 \
   test_speed512-90s \
@@ -51,6 +57,32 @@ shared: \
   libpqcrystals_fips202_ref.so \
   libpqcrystals_aes256ctr_ref.so \
   libpqcrystals_sha2_ref.so
+
+srcs = kex.c kem.c indcpa.c polyvec.c poly.c ntt.c cbd.c reduce.c verify.c fips202.c symmetric-shake.c test_speed.c randombytes.c cpucycles.c speed_print.c
+objs = kex.o kem.o indcpa.o polyvec.o poly.o ntt.o cbd.o reduce.o verify.o fips202.o symmetric-shake.o test_speed.o randombytes.o cpucycles.o speed_print.o
+
+integration: hexl-wrapper.o reduce.o ntt-test.o test.o test
+
+#$(objs) : $(srcs)
+#	$(CC) $(CFLAGS) -DKYBER_K=2 $< -o $@ -c
+
+hexl-wrapper.o: IntelHEXL/ntt/include/ntt-wrapper.h
+	g++  -c IntelHEXL/ntt/ntt-wrapper.cc -o ntt-wrapper.o 
+
+reduce.o: 
+	$(CC) $(CFLAGS) -DKYBER_K=2 reduce.c -o reduce.o -c
+
+ntt-test.o: 
+	$(CC) $(CFLAGS) -DKYBER_K=2 ntt-test.c -o ntt-test.o -c
+
+test.o: 
+	$(CC) $(CFLAGS) test.c -o test.o -c
+
+test : 
+	$(CXX) -I/home/joserochh/mylibs/include ntt-wrapper.o reduce.o ntt-test.o test.o -o test -L/home/joserochh/mylibs/lib -lhexl -static
+
+
+
 
 libpqcrystals_fips202_ref.so: fips202.c fips202.h
 	$(CC) -shared -fPIC $(CFLAGS) fips202.c -o libpqcrystals_fips202_ref.so
@@ -171,6 +203,8 @@ PQCgenKAT_kem1024-90s: $(SOURCESNINETIES) $(HEADERSNINETIES) PQCgenKAT_kem.c rng
 
 clean:
 	-$(RM) -rf *.gcno *.gcda *.lcov *.o *.so
+	-$(RM) -rf ntt-test
+	-$(RM) -rf test
 	-$(RM) -rf test_kyber512
 	-$(RM) -rf test_kyber768
 	-$(RM) -rf test_kyber1024
