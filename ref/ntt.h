@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "params.h"
+#include "IntelHEXL/ntt/include/ntt-wrapper.h"
 
 #define zetas KYBER_NAMESPACE(zetas)
 extern const int16_t zetas[128];

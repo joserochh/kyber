@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 #include "params.h"
 #include "ntt.h"
 #include "reduce.h"
@@ -80,6 +81,11 @@ static int16_t fqmul(int16_t a, int16_t b) {
 void ntt(int16_t r[256]) {
   unsigned int len, start, j, k;
   int16_t t, zeta;
+  
+  NTTWrapper* myNTT = newNTT(1048, 7);
+  uint64_t modulus = GetModulus(myNTT);
+
+  printf("Rocha: %ld\n", modulus);
 
   k = 1;
   for(len = 128; len >= 2; len >>= 1) {
